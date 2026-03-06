@@ -27,7 +27,6 @@ public class BookingDTO {
     private String serviceType;
     private String location;
     private BigDecimal price;
-
     private PaymentStatus paymentStatus;
     private BookingStatus bookingStatus;
     private LocalDateTime createdAt;

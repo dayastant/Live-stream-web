@@ -14,7 +14,7 @@ public class BookingMapper {
     public BookingDTO toDto(Booking booking) {
         if (booking == null) return null;
 
-        return BookingDTO.builder()
+        return BookingDTO.builder()  // This now works with @Builder annotation
                 .id(booking.getId())
                 .name(booking.getName())
                 .phone(booking.getPhone())

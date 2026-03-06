@@ -24,7 +24,6 @@ public class AdminDTO {
     private LocalDateTime createdAt;
     private Long livestreamCount;
 
-    // Computed fields
     public String getLastLoginFormatted() {
         return lastLogin != null ?
                 lastLogin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : "Never logged in";
