@@ -1,13 +1,9 @@
 package com.example.Live.stream.domain.entity.livestream;
 
-
 import com.example.Live.stream.domain.base.BaseEntity;
 import com.example.Live.stream.domain.entity.admin.Admin;
 import com.example.Live.stream.domain.entity.viewer.LivestreamAccess;
 import com.example.Live.stream.domain.enums.LivestreamStatus;
-import com.example.Live.stream.domain.entity.livestream.StreamEvent;
-
-
 import com.example.Live.stream.domain.enums.StreamEventType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -103,11 +99,12 @@ public class Livestream extends BaseEntity {
         }
     }
 
+    // FIXED: No builder usage here
     private void addStreamEvent(StreamEventType eventType) {
-        StreamEvent event = StreamEvent.builder()
-                .eventType(eventType)
-                .livestream(this)
-                .build();
+        StreamEvent event = new StreamEvent();
+        event.setEventType(eventType);
+        event.setLivestream(this);
+        event.setEventTime(LocalDateTime.now());
         this.streamEvents.add(event);
     }
 
