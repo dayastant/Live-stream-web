@@ -3,7 +3,6 @@ package com.example.Live.stream.service.mapper;
 import com.example.Live.stream.domain.entity.livestream.StreamEvent;
 import com.example.Live.stream.service.dto.StreamEventDTO;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 
 @Component
@@ -12,7 +11,7 @@ public class StreamEventMapper {
     public StreamEventDTO toDto(StreamEvent event) {
         if (event == null) return null;
 
-        StreamEventDTO.StreamEventDTOBuilder builder = StreamEventDTO.builder()
+        StreamEventDTO.Builder builder = StreamEventDTO.builder()
                 .id(event.getId())
                 .eventType(event.getEventType())
                 .eventTime(event.getEventTime());

@@ -5,7 +5,6 @@ import com.example.Live.stream.domain.enums.BookingStatus;
 import com.example.Live.stream.domain.enums.PaymentStatus;
 import com.example.Live.stream.service.dto.BookingDTO;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 
 @Component
@@ -14,7 +13,7 @@ public class BookingMapper {
     public BookingDTO toDto(Booking booking) {
         if (booking == null) return null;
 
-        return BookingDTO.builder()  // This now works with @Builder annotation
+        return BookingDTO.builder()
                 .id(booking.getId())
                 .name(booking.getName())
                 .phone(booking.getPhone())

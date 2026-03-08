@@ -3,6 +3,7 @@ package com.example.Live.stream.service.mapper;
 import com.example.Live.stream.domain.entity.livestream.StreamConfig;
 import com.example.Live.stream.service.dto.StreamConfigDTO;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 @Component
 public class StreamConfigMapper {
@@ -10,7 +11,7 @@ public class StreamConfigMapper {
     public StreamConfigDTO toDto(StreamConfig config) {
         if (config == null) return null;
 
-        StreamConfigDTO.StreamConfigDTOBuilder builder = StreamConfigDTO.builder()
+        StreamConfigDTO.Builder builder = StreamConfigDTO.builder()
                 .id(config.getId())
                 .rtmpUrl(config.getRtmpUrl())
                 .streamKey(config.getStreamKey())

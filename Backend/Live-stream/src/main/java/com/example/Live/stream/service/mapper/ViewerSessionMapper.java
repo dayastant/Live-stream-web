@@ -2,23 +2,24 @@ package com.example.Live.stream.service.mapper;
 
 import com.example.Live.stream.domain.entity.viewer.ViewerSession;
 import com.example.Live.stream.service.dto.ViewerSessionDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class ViewerSessionMapper {
 
     private final LivestreamAccessMapper livestreamAccessMapper;
 
+    public ViewerSessionMapper(LivestreamAccessMapper livestreamAccessMapper) {
+        this.livestreamAccessMapper = livestreamAccessMapper;
+    }
+
     public ViewerSessionDTO toDto(ViewerSession session) {
         if (session == null) return null;
 
-        ViewerSessionDTO.ViewerSessionDTOBuilder builder = ViewerSessionDTO.builder()
+        ViewerSessionDTO.Builder builder = ViewerSessionDTO.builder()
                 .id(session.getId())
                 .sessionToken(session.getSessionToken())
                 .ipAddress(session.getIpAddress())

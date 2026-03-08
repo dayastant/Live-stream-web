@@ -3,14 +3,11 @@ package com.example.Live.stream.service.mapper;
 import com.example.Live.stream.domain.entity.livestream.Livestream;
 import com.example.Live.stream.domain.enums.LivestreamStatus;
 import com.example.Live.stream.service.dto.LivestreamDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class LivestreamMapper {
 
     private final StreamConfigMapper streamConfigMapper;
@@ -18,10 +15,21 @@ public class LivestreamMapper {
     private final VideoMapper videoMapper;
     private final AnalyticsMapper analyticsMapper;
 
+    public LivestreamMapper(
+            StreamConfigMapper streamConfigMapper,
+            StreamEventMapper streamEventMapper,
+            VideoMapper videoMapper,
+            AnalyticsMapper analyticsMapper) {
+        this.streamConfigMapper = streamConfigMapper;
+        this.streamEventMapper = streamEventMapper;
+        this.videoMapper = videoMapper;
+        this.analyticsMapper = analyticsMapper;
+    }
+
     public LivestreamDTO toDto(Livestream livestream) {
         if (livestream == null) return null;
 
-        LivestreamDTO.LivestreamDTOBuilder builder = LivestreamDTO.builder()
+        LivestreamDTO.Builder builder = LivestreamDTO.builder()
                 .id(livestream.getId())
                 .title(livestream.getTitle())
                 .description(livestream.getDescription())

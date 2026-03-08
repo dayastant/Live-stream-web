@@ -32,7 +32,13 @@ public class StreamEvent extends BaseEntity {
         this.eventTime = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    // ===== Getters and Setters =====
+
+    @Override
+    public String getId() {
+        return super.getId();
+    }
+
     public StreamEventType getEventType() {
         return eventType;
     }
@@ -55,5 +61,15 @@ public class StreamEvent extends BaseEntity {
 
     public void setLivestream(Livestream livestream) {
         this.livestream = livestream;
+    }
+
+    // ===== Business methods =====
+
+    public boolean isStarted() {
+        return StreamEventType.STARTED.equals(this.eventType);
+    }
+
+    public boolean isStopped() {
+        return StreamEventType.STOPPED.equals(this.eventType);
     }
 }

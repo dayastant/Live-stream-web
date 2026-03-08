@@ -45,25 +45,72 @@ public class StreamConfig extends BaseEntity {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
-    public String getRtmpUrl() { return rtmpUrl; }
-    public void setRtmpUrl(String rtmpUrl) { this.rtmpUrl = rtmpUrl; }
+    // ===== Getters and Setters =====
 
-    public String getStreamKey() { return streamKey; }
-    public void setStreamKey(String streamKey) { this.streamKey = streamKey; }
+    @Override
+    public String getId() {
+        return super.getId();
+    }
 
-    public String getHlsUrl() { return hlsUrl; }
-    public void setHlsUrl(String hlsUrl) { this.hlsUrl = hlsUrl; }
+    public String getRtmpUrl() {
+        return rtmpUrl;
+    }
 
-    public Integer getBitrate() { return bitrate; }
-    public void setBitrate(Integer bitrate) { this.bitrate = bitrate; }
+    public void setRtmpUrl(String rtmpUrl) {
+        this.rtmpUrl = rtmpUrl;
+    }
 
-    public String getResolution() { return resolution; }
-    public void setResolution(String resolution) { this.resolution = resolution; }
+    public String getStreamKey() {
+        return streamKey;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setStreamKey(String streamKey) {
+        this.streamKey = streamKey;
+    }
 
-    public Livestream getLivestream() { return livestream; }
-    public void setLivestream(Livestream livestream) { this.livestream = livestream; }
+    public String getHlsUrl() {
+        return hlsUrl;
+    }
+
+    public void setHlsUrl(String hlsUrl) {
+        this.hlsUrl = hlsUrl;
+    }
+
+    public Integer getBitrate() {
+        return bitrate;
+    }
+
+    public void setBitrate(Integer bitrate) {
+        this.bitrate = bitrate;
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Livestream getLivestream() {
+        return livestream;
+    }
+
+    public void setLivestream(Livestream livestream) {
+        this.livestream = livestream;
+    }
+
+    // ===== Business methods =====
+
+    public String getFullRtmpUrl() {
+        return rtmpUrl + "/" + streamKey;
+    }
 }

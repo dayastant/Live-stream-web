@@ -35,15 +35,39 @@ public class Analytics extends BaseEntity {
     }
 
     // Getters and Setters
-    public Integer getConcurrentViewers() { return concurrentViewers; }
-    public void setConcurrentViewers(Integer concurrentViewers) { this.concurrentViewers = concurrentViewers; }
+    public String getId() {
+        return super.getId();
+    }
 
-    public Integer getPeakViewers() { return peakViewers; }
-    public void setPeakViewers(Integer peakViewers) { this.peakViewers = peakViewers; }
+    public Integer getConcurrentViewers() {
+        return concurrentViewers;
+    }
 
-    public LocalDateTime getRecordedAt() { return recordedAt; }
-    public void setRecordedAt(LocalDateTime recordedAt) { this.recordedAt = recordedAt; }
+    public void setConcurrentViewers(Integer concurrentViewers) {
+        this.concurrentViewers = concurrentViewers;
+    }
 
-    public Livestream getLivestream() { return livestream; }
-    public void setLivestream(Livestream livestream) { this.livestream = livestream; }
+    public Integer getPeakViewers() {
+        return peakViewers;
+    }
+
+    public void setPeakViewers(Integer peakViewers) {
+        this.peakViewers = peakViewers;
+    }
+
+    public LocalDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(LocalDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+    public Livestream getLivestream() {
+        return livestream;
+    }
+
+    public void setLivestream(Livestream livestream) {
+        this.livestream = livestream;
+    }
 }

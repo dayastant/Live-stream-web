@@ -1,28 +1,13 @@
 package com.example.Live.stream.domain.entity.viewer;
 
-
 import com.example.Live.stream.domain.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "viewer_sessions")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString(callSuper = true, exclude = "accesses")
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class ViewerSession extends BaseEntity {
 
     @Column(name = "session_token", nullable = false, unique = true)
@@ -35,17 +20,84 @@ public class ViewerSession extends BaseEntity {
     private String deviceInfo;
 
     @Column(name = "started_at", nullable = false)
-    @Builder.Default
-    private LocalDateTime startedAt = LocalDateTime.now();
+    private LocalDateTime startedAt;
 
     @Column(name = "ended_at")
     private LocalDateTime endedAt;
 
     @OneToMany(mappedBy = "viewerSession", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<LivestreamAccess> accesses = new ArrayList<>();
 
-    // Business methods
+    // Default constructor
+    public ViewerSession() {
+        this.startedAt = LocalDateTime.now();
+    }
+
+    // Constructor with fields
+    public ViewerSession(String sessionToken, String ipAddress, String deviceInfo) {
+        this.sessionToken = sessionToken;
+        this.ipAddress = ipAddress;
+        this.deviceInfo = deviceInfo;
+        this.startedAt = LocalDateTime.now();
+    }
+
+    // ===== Getters and Setters =====
+
+    @Override
+    public String getId() {
+        return super.getId();
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(String deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(LocalDateTime startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public LocalDateTime getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(LocalDateTime endedAt) {
+        this.endedAt = endedAt;
+    }
+
+    public List<LivestreamAccess> getAccesses() {
+        return accesses;
+    }
+
+    public void setAccesses(List<LivestreamAccess> accesses) {
+        this.accesses = accesses;
+    }
+
+    // ===== Business methods =====
+
     public void endSession() {
         this.endedAt = LocalDateTime.now();
     }

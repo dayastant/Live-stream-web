@@ -3,7 +3,6 @@ package com.example.Live.stream.service.mapper;
 import com.example.Live.stream.domain.entity.livestream.Video;
 import com.example.Live.stream.service.dto.VideoDTO;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 
 @Component
@@ -12,7 +11,7 @@ public class VideoMapper {
     public VideoDTO toDto(Video video) {
         if (video == null) return null;
 
-        VideoDTO.VideoDTOBuilder builder = VideoDTO.builder()
+        VideoDTO.Builder builder = VideoDTO.builder()
                 .id(video.getId())
                 .title(video.getTitle())
                 .videoUrl(video.getVideoUrl())

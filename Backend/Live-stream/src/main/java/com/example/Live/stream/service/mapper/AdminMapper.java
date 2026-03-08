@@ -10,7 +10,7 @@ public class AdminMapper {
     public AdminDTO toDto(Admin admin) {
         if (admin == null) return null;
 
-        return AdminDTO.builder()
+        return AdminDTO.builder()  // This will now work with manual builder
                 .id(admin.getId())
                 .username(admin.getUsername())
                 .role(admin.getRole())
@@ -24,7 +24,6 @@ public class AdminMapper {
 
     public Admin toEntity(AdminDTO dto) {
         if (dto == null) return null;
-
         Admin admin = new Admin();
         admin.setId(dto.getId());
         admin.setUsername(dto.getUsername());
