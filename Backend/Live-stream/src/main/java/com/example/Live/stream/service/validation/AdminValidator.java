@@ -1,103 +1,115 @@
 package com.example.Live.stream.service.validation;
 
 import com.example.Live.stream.domain.entity.admin.Admin;
-import com.example.Live.stream.service.dto.AdminDTO;
+import com.example.Live.stream.security.dto.AdminLoginRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import java.util.regex.Pattern;
 
+/**
+ * Validator for admin-related operations.
+ * Follows Single Responsibility Principle - only handles validation.
+ */
 @Component
 public class AdminValidator {
 
-    private static final Pattern USERNAME_PATTERN =
-            Pattern.compile("^[a-zA-Z0-9._-]{3,50}$");
+    private static final int MIN_USERNAME_LENGTH = 3;
+    private static final int MAX_USERNAME_LENGTH = 50;
+    private static final int MIN_PASSWORD_LENGTH = 8;
 
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
-
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
-
-    public void validateForCreation(AdminDTO adminDTO, String password) {
-        validateAdminDTO(adminDTO);
-        validatePassword(password);
-    }
-
-    public void validateForUpdate(AdminDTO adminDTO, Admin existingAdmin) {
-        if (adminDTO == null) return;
-
-        if (adminDTO.getUsername() != null &&
-                !adminDTO.getUsername().equals(existingAdmin.getUsername())) {
-            throw new IllegalArgumentException("Username cannot be changed");
-        }
-
-        if (adminDTO.getRole() != null &&
-                existingAdmin.getRole() != adminDTO.getRole() &&
-                !existingAdmin.isSuperAdmin()) {
-            throw new IllegalArgumentException("Only super admin can change roles");
-        }
-    }
-
-    private void validateAdminDTO(AdminDTO adminDTO) {
-        if (adminDTO == null) {
-            throw new IllegalArgumentException("Admin data cannot be null");
-        }
-
-        // Validate username
-        if (!StringUtils.hasText(adminDTO.getUsername())) {
-            throw new IllegalArgumentException("Username is required");
-        }
-
-        if (!USERNAME_PATTERN.matcher(adminDTO.getUsername()).matches()) {
-            throw new IllegalArgumentException(
-                    "Username must be 3-50 characters and can only contain letters, numbers, dots, underscores and hyphens"
-            );
-        }
-
-        // Validate role
-        if (adminDTO.getRole() == null) {
-            throw new IllegalArgumentException("Role is required");
-        }
-    }
-
-    private void validatePassword(String password) {
-        if (!StringUtils.hasText(password)) {
-            throw new IllegalArgumentException("Password is required");
-        }
-
-        if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new IllegalArgumentException(
-                    "Password must be at least 8 characters long and contain at least one digit, " +
-                            "one lowercase, one uppercase letter, and one special character (@#$%^&+=)"
-            );
-        }
-    }
-
-    public void validateLogin(String username, String password) {
+    /**
+     * Validates username for authentication process.
+     *
+     * @param username the username to validate
+     * @throws IllegalArgumentException if username is invalid
+     */
+    public void validateUsernameForAuthentication(String username) {
         if (!StringUtils.hasText(username)) {
-            throw new IllegalArgumentException("Username is required");
+            throw new IllegalArgumentException("Username cannot be null or empty");
         }
 
+        if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+            throw new IllegalArgumentException(
+                    String.format("Username must be between %d and %d characters",
+                            MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH)
+            );
+        }
+
+        // Validate username format (alphanumeric and allowed special characters)
+        if (!username.matches("^[a-zA-Z0-9._-]+$")) {
+            throw new IllegalArgumentException(
+                    "Username can only contain letters, numbers, dots, underscores and hyphens"
+            );
+        }
+    }
+
+    /**
+     * Validates admin status.
+     *
+     * @param admin the admin to validate
+     * @throws IllegalStateException if admin is inactive
+     */
+    public void validateAdminActive(Admin admin) {
+        if (admin == null) {
+            throw new IllegalArgumentException("Admin cannot be null");
+        }
+
+        if (!admin.getIsActive()) {
+            throw new IllegalStateException(
+                    String.format("Admin account is deactivated: %s", admin.getUsername())
+            );
+        }
+    }
+
+    /**
+     * Validates login request.
+     *
+     * @param request the login request
+     * @throws IllegalArgumentException if request is invalid
+     */
+    public void validateLoginRequest(AdminLoginRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Login request cannot be null");
+        }
+
+        validateUsernameForAuthentication(request.getUsername());
+        validatePassword(request.getPassword());
+    }
+
+    /**
+     * Validates password.
+     *
+     * @param password the password to validate
+     * @throws IllegalArgumentException if password is invalid
+     */
+    public void validatePassword(String password) {
         if (!StringUtils.hasText(password)) {
-            throw new IllegalArgumentException("Password is required");
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
+        if (password.length() < MIN_PASSWORD_LENGTH) {
+            throw new IllegalArgumentException(
+                    String.format("Password must be at least %d characters long", MIN_PASSWORD_LENGTH)
+            );
         }
     }
 
-    public void validatePasswordChange(String oldPassword, String newPassword) {
-        if (!StringUtils.hasText(oldPassword)) {
-            throw new IllegalArgumentException("Old password is required");
+    /**
+     * Validates admin for creation.
+     *
+     * @param admin the admin to validate
+     * @param rawPassword the raw password
+     * @throws IllegalArgumentException if validation fails
+     */
+    public void validateForCreation(Admin admin, String rawPassword) {
+        if (admin == null) {
+            throw new IllegalArgumentException("Admin cannot be null");
         }
 
-        validatePassword(newPassword);
+        validateUsernameForAuthentication(admin.getUsername());
+        validatePassword(rawPassword);
 
-        if (oldPassword.equals(newPassword)) {
-            throw new IllegalArgumentException("New password must be different from old password");
-        }
-    }
-
-    public void validateEmail(String email) {
-        if (email != null && !EMAIL_PATTERN.matcher(email).matches()) {
-            throw new IllegalArgumentException("Invalid email format");
+        if (admin.getRole() == null) {
+            throw new IllegalArgumentException("Admin role cannot be null");
         }
     }
 }

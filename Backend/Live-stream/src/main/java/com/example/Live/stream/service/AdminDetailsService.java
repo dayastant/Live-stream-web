@@ -1,43 +1,53 @@
 package com.example.Live.stream.service;
 
 import com.example.Live.stream.domain.entity.admin.Admin;
-import com.example.Live.stream.repository.AdminRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+/**
+ * Interface for admin-specific user details service.
+ * Follows Interface Segregation Principle - extends base interface with admin-specific methods.
+ */
+public interface AdminDetailsService extends UserDetailsService {
 
-@Service
-public class AdminDetailsService implements UserDetailsService {
+    /**
+     * Loads admin entity by username.
+     *
+     * @param username the username
+     * @return Admin entity
+     * @throws UsernameNotFoundException if admin not found
+     */
+    Admin loadAdminByUsername(String username) throws UsernameNotFoundException;
 
-    private final AdminRepository adminRepository;
+    /**
+     * Updates admin last login time.
+     *
+     * @param username the username
+     */
+    void updateLastLogin(String username);
 
-    // Constructor to initialize repository
-    public AdminDetailsService(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
-    }
+    /**
+     * Gets admin role.
+     *
+     * @param username the username
+     * @return role name
+     */
+    String getAdminRole(String username);
 
+    /**
+     * Checks if username exists.
+     *
+     * @param username the username
+     * @return true if exists
+     */
+    boolean existsByUsername(String username);
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Admin not found with username: " + username));
-
-        if (!admin.getIsActive()) {
-            throw new UsernameNotFoundException("Admin account is deactivated: " + username);
-        }
-
-        return new User(
-                admin.getUsername(),
-                admin.getPasswordHash(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + admin.getRole().name()))
-        );
-    }
+    /**
+     * Validates admin credentials.
+     *
+     * @param username the username
+     * @param password the password
+     * @return true if valid
+     */
+    boolean validateCredentials(String username, String password);
 }
