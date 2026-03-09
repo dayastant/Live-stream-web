@@ -12,6 +12,10 @@ public class MailServiceImpl implements MailService {
 
     private final JavaMailSender mailSender;
 
+    public MailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     @Override
     public void sendPendingMail(String to, String name, String event) {
 
