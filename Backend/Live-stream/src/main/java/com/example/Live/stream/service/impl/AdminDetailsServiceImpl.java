@@ -13,16 +13,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Service
 @Transactional
 public class AdminDetailsServiceImpl implements AdminDetailsService {
-
     private static final Logger log = LoggerFactory.getLogger(AdminDetailsServiceImpl.class);
-
     private final AdminRepository adminRepository;
     private final AdminValidator adminValidator;
     private final PasswordEncoder passwordEncoder;
